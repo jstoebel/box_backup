@@ -10,8 +10,6 @@ import datetime
 
 import requests
 
-
-
 def refresh(secrects_loc):
     """
     :param secrets: json string of secrets

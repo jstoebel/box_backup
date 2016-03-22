@@ -1,9 +1,3 @@
-[2016-03-21 15:17:22.437752]
-    Connection to box failed! Please manually enter tokens and try again. Back up will not occur as normal until this is fixed!
-
-[2016-03-21 15:17:48.866445]
-    Connection to Box failed! Please manually enter tokens and try again. Back up will not occur as normal until this is fixed!
-
-[2016-03-21 15:24:23.835479]
+[2016-03-22 10:55:46.192060]
     Connection to Box failed! Please manually enter tokens and try again. Back up will not occur as normal until this is fixed!
 
