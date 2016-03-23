@@ -6,6 +6,7 @@ import sys
 import time
 
 from boxsdk import OAuth2, Client
+import boxsdk
 
 import sys
 sys.path.insert(0, '.')
@@ -24,7 +25,7 @@ class ClientWrapper:
             )
 
         self.client = Client(oauth)
-        # self._get_root_folder('EDSdata_backup')
+        self._get_root_folder('EDSdata_backup')
 
     def _get_root_folder(self, name):
         """
@@ -48,8 +49,11 @@ class ClientWrapper:
 
         dir_name = "backup_{}".format(calendar.timegm(time.gmtime()))
         print "attempting to make destination folder in Box:", dir_name
+        self.backup_root = backup_root
         self.current_backup = backup_root.create_subfolder(dir_name)
 
+    def _find_in_pwd(self, folder_id, name, type):
+        pass
 
     def _go_to(self, path):
         """
@@ -59,16 +63,26 @@ class ClientWrapper:
         :return: the box folder object that was created
         """
 
-        folder = self.current_backup
+        current_folder = self.current_backup
         for p in path:
-            #try to get it, or create it
-            _is_in_folder(folder, p)
+            #try to get make it. If we fail, navigate to it.
+            try:
+                current_folder = current_folder.create_subfolder(p)     #create the folder
+            except boxsdk.exception.BoxAPIException, e:
+                if e.status == 409:     #trying to make an item that exists.
+                    # the folder exists -> grab it
+                    #list all items in this folder
+                    pass
+                    # get folder in this location with name == p
 
 
+                else:
+                    # we got some other error -> raise
+                    raise e
 
-            #grab an existing folder
-            # folder = folder.create_subfolder(p)     #create the folder
-        return folder
+                #grab an existing folder
+
+        return current_folder
 
     def copy(self, copy_dir):
         """
@@ -105,25 +119,15 @@ def _splitpath(path):
             allparts.insert(0, parts[1])    # pop the last directory, insert and repeat
     return allparts
 
-def _is_in_folder(parent, child):
-    """
-
-    :param parent: box folder
-    :param child: string of folder
-    :return: returns if folder with child name is in parent folder
-    """
-
-    print parent.get_items(limit=100, offset=0)
-
 def main():
 
     secrets = 'secrets.json'
     client = ClientWrapper(secrets)
-    # client.copy("./test_folder")
-    items = client.client.folder(folder_id='0').get_items(limit=100, offset=0)
 
-    names = [i.name for i in items]
-    print names
+    items = client.backup_root.get_items(limit=100, offset=0)
+    print [(i.type, i.id) for i in items]
+
+
 
 if __name__ == '__main__':
     main()
