@@ -1,4 +1,3 @@
-
 import calendar
 import json
 import os
@@ -24,6 +23,8 @@ class ClientWrapper:
             )
 
         self.client = Client(oauth)
+
+        #CHANGE THIS TO THE DIRECTORY OF WHERE YOUR UPLOADS WILL GO.
         self._get_root_folder('EDSdata_backup')
 
     def _get_root_folder(self, name):
@@ -144,8 +145,10 @@ def _splitpath(path):
 
 def main():
 
-    secrets = 'secrets.json'
+    secrets = 'secrets.json' #define this file yourself and place it in the root directory.
     wrapper = ClientWrapper(secrets)
+
+    #CHANGE THIS TO COPY WHAT EVER FOLDER YOU WANT.
     wrapper.copy('test_folder')
 
 if __name__ == '__main__':
