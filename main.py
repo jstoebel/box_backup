@@ -2,7 +2,6 @@
 import calendar
 import json
 import os
-import sys
 import time
 
 from boxsdk import OAuth2, Client
@@ -52,9 +51,6 @@ class ClientWrapper:
         self.backup_root = backup_root
         self.current_backup = backup_root.create_subfolder(dir_name)
 
-    def _find_in_pwd(self, folder_id, name, type):
-        pass
-
     def _go_to(self, path):
         """
         walks to and/or creates path from starting folder
@@ -64,23 +60,19 @@ class ClientWrapper:
         """
 
         current_folder = self.current_backup
+
         for p in path:
             #try to get make it. If we fail, navigate to it.
             try:
                 current_folder = current_folder.create_subfolder(p)     #create the folder
             except boxsdk.exception.BoxAPIException, e:
                 if e.status == 409:     #trying to make an item that exists.
-                    # the folder exists -> grab it
-                    #list all items in this folder
-                    pass
-                    # get folder in this location with name == p
 
-
+                    #simply "cd" into that folder
+                    current_folder = _find_in_pwd(current_folder, p, 'folder')
                 else:
                     # we got some other error -> raise
                     raise e
-
-                #grab an existing folder
 
         return current_folder
 
@@ -93,11 +85,42 @@ class ClientWrapper:
         for dirname, child_dirs, files in os.walk(copy_dir):
             relative_path = os.path.relpath(dirname, copy_dir)      #get relative path from root directory
             relative_path_split = _splitpath(relative_path)
-            if relative_path_split != ["."]: # unless files are located in the root directory
+
+            if relative_path_split == ["."]: # special case for root directory
+                box_folder = self.current_backup
+            else:
                 box_folder = self._go_to(relative_path_split)
+
+            for f in files:
+                uploaded = box_folder.upload(os.path.join(dirname, f), f, preflight_check=True)
+                print "uploaded", uploaded
+                #copy all items in path to box_folder
+
 
         # # creates folder structure /L1/L2/L3
         # client.folder(folder_id='0').create_subfolder('L1').create_subfolder('L2').create_subfolder('L3')
+
+def _find_in_pwd(folder, name, type):
+    """
+    find an item in the current box folder
+    :param folder: box folder to search in
+    :param name: name of item (string)
+    :param type: type of item (folder or item)
+    :return: return the item object if found, otherwise raise an exception
+    """
+
+    offset = 0
+    limit = 100
+    while True:
+        items = folder.get_items(limit=limit, offset=offset)
+        if not items:
+            #nothing found!
+            raise IndexError('Attempting to search with index beyond upper bound of folder.')
+        for i in items:
+            if i.name==name and i.type == type:
+                return i
+        #didn't find it
+        offset += limit
 
 def _splitpath(path):
     """
@@ -122,12 +145,8 @@ def _splitpath(path):
 def main():
 
     secrets = 'secrets.json'
-    client = ClientWrapper(secrets)
-
-    items = client.backup_root.get_items(limit=100, offset=0)
-    print [(i.type, i.id) for i in items]
-
-
+    wrapper = ClientWrapper(secrets)
+    wrapper.copy('test_folder')
 
 if __name__ == '__main__':
     main()
