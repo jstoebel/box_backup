@@ -23,7 +23,7 @@ This is an example script for backing up to Box using the Box content API
 
  * For more details on authentication with the Box API see [this](https://www.google.com/url?sa=t&rct=j&q=&esrc=s&source=web&cd=1&ved=0ahUKEwjZ1obuj-TLAhXIuB4KHRDoDbwQFggdMAA&url=https%3A%2F%2Fdevelopers.box.com%2F&usg=AFQjCNEo1ZIH456h--L1cri3j8YcoF9TjQ&sig2=rs3pCNC-dnPhhNQmch_f2g).
 
- ###How it Works ###
+### Set up###
 
 This program will
 
