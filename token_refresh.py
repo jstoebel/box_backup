@@ -63,7 +63,7 @@ def TestCnxnOpen(cnxn):
 
 def alert_fail(msg, password, recipiant):
     """
-    logs and aler
+    logs an alert
     :return:
     """
     mail_cnxn = EmailConnect(password, recipiant)
