@@ -13,7 +13,7 @@ import token_refresh
 class ClientWrapper:
 
     def __init__(self, secrets):
-        token_refresh.main()     #refresh token
+        token_refresh.main(secrets)     #refresh token
         with open(secrets, 'r') as secrets_file:
             secrets = json.load(secrets_file)
             oauth = OAuth2(
@@ -33,6 +33,8 @@ class ClientWrapper:
         :param
             name: name of folder to locate
         :return: the folder object, found in the parent directory, matching name is bound to object
+            backup_root: the root directory of where all backups are kept (box folder)
+            current_backup: the root folder of the current backup (box folder)
         """
         backup_root = None
         offset = 0
@@ -94,12 +96,7 @@ class ClientWrapper:
 
             for f in files:
                 uploaded = box_folder.upload(os.path.join(dirname, f), f, preflight_check=True)
-                print "uploaded", uploaded
                 #copy all items in path to box_folder
-
-
-        # # creates folder structure /L1/L2/L3
-        # client.folder(folder_id='0').create_subfolder('L1').create_subfolder('L2').create_subfolder('L3')
 
 def _find_in_pwd(folder, name, type):
     """

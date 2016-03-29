@@ -8,6 +8,8 @@ import json
 import smtplib
 import datetime
 
+import os
+
 import requests
 
 def refresh(secrects_loc):
@@ -82,9 +84,7 @@ def log_fail(msg):
     with open("log.txt", 'a') as log_writter:
         log_writter.write(msg)
 
-def main():
-
-    secrects_loc = 'secrets.json'
+def main(secrects_loc):
 
     try:
         refresh(secrects_loc)

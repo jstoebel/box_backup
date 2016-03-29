@@ -1,4 +1,4 @@
 secrets.json
 *.pyc
-test_folder
+test/test_folder
 log.txt
