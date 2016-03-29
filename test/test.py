@@ -110,18 +110,14 @@ class TokenRefreshTest(unittest.TestCase):
 
         with open(test_log_loc, 'w+') as log_handle:
             log_pre = log_handle.read()
-            print 'before the change', log_pre
-
 
         token_refresh.log_fail(test_log_loc, 'spam') #run the function
 
         with open(test_log_loc, 'rw+') as log_handle_post:
             log_post = log_handle_post.read()
-            print 'after the change', log_post
             self.assertNotEqual(log_pre, log_post)
             log_handle_post.write(log_pre)
             # log_handle_post.truncate()
-            print 'now the log is:', log_handle_post.read()
             self.assertEqual(log_handle_post.read(), log_pre) # make sure log was rolled back
 
 
