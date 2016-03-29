@@ -77,11 +77,11 @@ def alert_fail(msg, password, recipiant):
 
     mail_cnxn.sendmail(recipiant, recipiant, email.as_string())
 
-def log_fail(msg):
+def log_fail(log_loc, msg):
     """
     logs the failure
     """
-    with open("log.txt", 'a') as log_writter:
+    with open(log_loc, 'a') as log_writter:
         log_writter.write(msg)
 
 def main(secrects_loc):
@@ -96,7 +96,7 @@ def main(secrects_loc):
     Connection to Box failed! Please manually enter tokens and try again. Back up will not occur as normal until this is fixed!
 
 """.format(time_stamp=str(datetime.datetime.now()))
-        log_fail(msg)
+        log_fail('log.txt', msg)
         alert_fail(msg, secrets['password'], secrets['recipiant'])   #alert admin that token couldn't be refreshed.
 
 
