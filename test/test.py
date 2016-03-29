@@ -125,5 +125,6 @@ class TokenRefreshTest(unittest.TestCase):
             self.assertEqual(log_handle_post.read(), log_pre) # make sure log was rolled back
 
 
+
 if __name__ == '__main__':
     main(sys.argv)

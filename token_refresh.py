@@ -97,8 +97,6 @@ def main(secrects_loc):
 
 """.format(time_stamp=str(datetime.datetime.now()))
         log_fail('log.txt', msg)
-        alert_fail(msg, secrets['password'], secrets['recipiant'])   #alert admin that token couldn't be refreshed.
-
 
 if __name__ == '__main__':
     main()
