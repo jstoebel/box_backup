@@ -8,6 +8,7 @@ This is an example script for backing up to Box using the Box content API
 
 ### Set up###
 
+ * This project requires >= python 2.7.9 for [this reason](https://urllib3.readthedocs.org/en/latest/security.html#insecureplatformwarning). Not compatable with Python 3
  * Install requirements: `pip install -r requirements.txt`
  * Configuration: You will need to create a json file called secrets.json with the following content:
 
