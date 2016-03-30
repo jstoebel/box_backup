@@ -1,1 +1,3 @@
-spamspamspamspamspamspamspam
+spamspamspamspamspamspamspam[2016-03-30 15:58:07.892573]
+    Connection to Box failed! Please manually enter tokens and try again. Back up will not occur as normal until this is fixed!
+

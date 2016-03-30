@@ -75,8 +75,24 @@ class ClientWrapper:
 
         return current_folder
 
-    def copy(self, copy_dir):
+    def prep_copy(self, root_dir):
         """
+        look over root directory and copy and directories not already added to box
+        :param root_dir: the root directory of the backup.
+        """
+
+        box_contents = _ls(self.backup_root)
+        box_names = frozenset([i.name for i in box_contents if i.type == 'folder']) # all of the items in this folder in box
+
+        archives = frozenset(os.listdir(root_dir)) # all of the archives in the dir to be backed up
+
+        new_items = archives - box_names
+        for i in new_items:
+            self._copy(os.path.join(root_dir, i))
+
+    def _copy(self, copy_dir):
+        """
+        TODO: copy everything inside of copy_dir itself.
         :return: copy_dir and all its contents are copied to the dest_folder
         """
 
@@ -94,6 +110,23 @@ class ClientWrapper:
                 uploaded = box_folder.upload(os.path.join(dirname, f), f, preflight_check=True)
                 #copy all items in path to box_folder
 
+def _ls(folder):
+    """
+    folder: box_folder to list contents
+    contents of folder are listed (list of box items)
+    """
+
+    offset = 0
+    limit = 1000
+    results = []
+    while True:
+        items = folder.get_items(limit=limit, offset=offset)
+        if items:
+            results += items
+            offset += limit
+        else:
+            return results
+
 def _find_in_pwd(folder, name, type):
     """
     find an item in the current box folder
@@ -103,18 +136,13 @@ def _find_in_pwd(folder, name, type):
     :return: return the item object if found, otherwise raise an exception
     """
 
-    offset = 0
-    limit = 100
-    while True:
-        items = folder.get_items(limit=limit, offset=offset)
-        if not items:
-            #nothing found!
-            raise IndexError('Attempting to search with index beyond upper bound of folder.')
-        for i in items:
-            if i.name==name and i.type == type:
-                return i
-        #didn't find it
-        offset += limit
+    items = _ls(folder)
+    for i in items:
+        if i.name == name and i.type == type:
+            return i
+
+    #didn't find it!
+    raise IndexError('Could not find {name} in {folder}'.format(name=name, folder=folder.name))
 
 def _splitpath(path):
     """
@@ -142,7 +170,7 @@ def main():
     wrapper = ClientWrapper(secrets)
 
     #CHANGE THIS TO COPY WHAT EVER FOLDER YOU WANT.
-    wrapper.copy('test_folder')
+    wrapper.prep_copy('test/test_root')
 
 if __name__ == '__main__':
     main()

@@ -1,0 +1,4 @@
+ - currently the script copies everything into a new folder each time. It solves the problem of versioning on its own.
+ - this is integrated with Ruby backup which creates a new directory for each backup. So...
+ - iterate over the root backup folder and find any folders that don't already exist.
+ - add them to EDSdata_backup
