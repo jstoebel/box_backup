@@ -1,3 +1,5 @@
 secrets.json
 *.pyc
 log.txt
+todo.md
+test/test_log.txt

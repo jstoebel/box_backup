@@ -34,7 +34,6 @@ class ClientWrapper:
             name: name of folder to locate
         :return: the folder object, found in the parent directory, matching name is bound to object
             backup_root: the root directory of where all backups are kept (box folder)
-            current_backup: the root folder of the current backup (box folder)
         """
         backup_root = None
         offset = 0
@@ -49,10 +48,7 @@ class ClientWrapper:
             else:
                 offset += result_size
 
-        dir_name = "backup_{}".format(calendar.timegm(time.gmtime()))
-        print "attempting to make destination folder in Box:", dir_name
         self.backup_root = backup_root
-        self.current_backup = backup_root.create_subfolder(dir_name)
 
     def _go_to(self, path):
         """
@@ -62,7 +58,7 @@ class ClientWrapper:
         :return: the box folder object that was created
         """
 
-        current_folder = self.current_backup
+        current_folder = self.backup_root
 
         for p in path:
             #try to get make it. If we fail, navigate to it.
@@ -90,7 +86,7 @@ class ClientWrapper:
             relative_path_split = _splitpath(relative_path)
 
             if relative_path_split == ["."]: # special case for root directory
-                box_folder = self.current_backup
+                box_folder = self.backup_root
             else:
                 box_folder = self._go_to(relative_path_split)
 
