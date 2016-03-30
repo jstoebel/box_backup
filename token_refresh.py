@@ -30,7 +30,10 @@ def refresh(secrects_loc):
     url = 'https://api.box.com/oauth2/token'
     resp = requests.post(url, data=payload) #refresh the token
 
-    resp.raise_for_status()     #raise an error if we get a bad response code
+    try:
+        resp.raise_for_status()     #raise an error if we get a bad response code
+    except requests.HTTPError:
+        raise requests.HTTPError('Bad request! Response: {r}'.format(r=resp.text))
 
     resp_data = json.loads(resp.text)
 

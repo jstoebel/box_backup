@@ -99,6 +99,7 @@ class TokenRefreshTest(unittest.TestCase):
 
         self.assertNotEqual(secrets_pre, secrets_post)
 
+
     def test_log_fail(self):
         """
         tests that the log file is successfully changed
