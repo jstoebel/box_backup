@@ -12,22 +12,13 @@ class ClientWrapperTest(unittest.TestCase):
 
     def setUp(self):
         self.secrets_loc = '../secrets.json'
-        self.wrapper = backup_main.ClientWrapper(self.secrets_loc)
+        self.wrapper = backup_main.ClientWrapper(self.secrets_loc, 'backup_test')
 
     def tearDown(self):
         """
-        delete the current_folder
+        delete the test folder
         """
-        self.wrapper.current_backup.delete()
-
-    # def _go_to(self, child):
-    #     """
-    #     go to the immediate child folder of name dir
-    #     self.current_folder is changed
-    #     """
-    #
-    #     folder = self.wrapper._find_in_pwd(dir)
-
+        self.wrapper.backup_root.delete()
 
     def testConstructor(self):
         """
@@ -38,40 +29,30 @@ class ClientWrapperTest(unittest.TestCase):
         """
         self.assertIs(type(self.wrapper.client), client.Client)
         self.assertIs(type(self.wrapper.backup_root), folder.Folder)
-        self.assertIs(type(self.wrapper.current_backup), folder.Folder)
+        self.assertIs(type(self.wrapper.backup_root), folder.Folder)
 
-    def test_copy(self):
+    def testcopy(self):
         """
         tests:
             tests that folder was copied exactly into box.
         """
 
-        copy_dir = 'test_folder'
-        self.wrapper.copy(copy_dir)
+        copy_dir = 'test_root' # relative to pwd
+        self.wrapper.prep_copy(copy_dir)
 
         #walk through the backup folder and confirm that everything matches the target backup folder
         for dirname, child_dirs, files in os.walk(copy_dir):
             relative_path = os.path.relpath(dirname, copy_dir)      #get relative path from root directory
             relative_path_split = backup_main._splitpath(relative_path)
 
-            #get the coorsponding box folder
-            box_folder = self.wrapper.current_backup
+            # get the coorsponding box folder
+            box_folder = self.wrapper.backup_root   # starting with the root folder
 
             for child in relative_path_split:
-                if child != ".":
+                if child != ".": # ASSUMPTION: no loose files in the root directory.
                     box_folder = backup_main._find_in_pwd(box_folder, child, 'folder')
 
-            #get items in box folder
-            all_contents = []
-            limit = 100
-            offset = 0
-            while True:
-                results = box_folder.get_items(limit=limit, offset=offset)
-                if results:
-                    all_contents += results
-                    offset += limit
-                else:
-                    break
+            all_contents = backup_main._ls(box_folder)
 
             box_items = [i.name for i in all_contents if i.type == 'file']
             box_items.sort()
@@ -86,7 +67,7 @@ class TokenRefreshTest(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_refresh(self):
+    def testRefresh(self):
         """
         tests that the tokens were successfully refreshed
         """
@@ -99,8 +80,7 @@ class TokenRefreshTest(unittest.TestCase):
 
         self.assertNotEqual(secrets_pre, secrets_post)
 
-
-    def test_log_fail(self):
+    def testLog_fail(self):
         """
         tests that the log file is successfully changed
         :return:
@@ -124,4 +104,17 @@ class TokenRefreshTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    unittest.main()
+
+    test_classes_to_run = [ClientWrapperTest, TokenRefreshTest]
+
+    loader = unittest.TestLoader()
+
+    suites_list = []
+    for test_class in test_classes_to_run:
+        suite = loader.loadTestsFromTestCase(test_class)
+        suites_list.append(suite)
+
+    big_suite = unittest.TestSuite(suites_list)
+
+    runner = unittest.TextTestRunner()
+    results = runner.run(big_suite)
