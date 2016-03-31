@@ -12,7 +12,16 @@ import token_refresh
 
 class ClientWrapper:
 
-    def __init__(self, secrets):
+    def __init__(self, secrets, root):
+        """
+        :param secrets: location of secrets file
+        :param root: the root back up folder in box to place any copies
+
+        TODO: current root is assumed to live inside the top level fox folder (id=0). Generalize to allow for user
+        to enter a path to a box folder anywhere in their tree
+        """
+
+
         token_refresh.main(secrets)     #refresh token
         with open(secrets, 'r') as secrets_file:
             secrets = json.load(secrets_file)
@@ -25,7 +34,7 @@ class ClientWrapper:
         self.client = Client(oauth)
 
         #CHANGE THIS TO THE DIRECTORY OF WHERE YOUR UPLOADS WILL GO.
-        self._get_root_folder('EDSdata_backup')
+        self._get_root_folder(root)
 
     def _get_root_folder(self, name):
         """
@@ -39,16 +48,21 @@ class ClientWrapper:
         offset = 0
         result_size = 100       #how many results in each request?
         while True:
-            match = self.client.search('EDSdata_backup', result_size, offset)
+            match = self.client.search(name, result_size, offset)
             for m in match:
                 if m.parent is None:    #items in the root folder will pass here.
                     backup_root = m
-            if backup_root is not None:
+            if (backup_root is not None) or (not match):
                 break
             else:
                 offset += result_size
 
-        self.backup_root = backup_root
+        if backup_root:
+            # we found the folder!
+            self.backup_root = backup_root
+        else:
+            # create the folder if it wasn't found
+            self.backup_root = self.client.folder(folder_id=0).create_subfolder(name)
 
     def _go_to(self, path):
         """
@@ -80,6 +94,7 @@ class ClientWrapper:
         look over root directory and copy and directories not already added to box
         :param root_dir: the root directory of the backup.
         """
+        self.target_root = root_dir # the root dir to be copied
 
         box_contents = _ls(self.backup_root)
         box_names = frozenset([i.name for i in box_contents if i.type == 'folder']) # all of the items in this folder in box
@@ -92,23 +107,16 @@ class ClientWrapper:
 
     def _copy(self, copy_dir):
         """
-        TODO: copy everything inside of copy_dir itself.
-        :return: copy_dir and all its contents are copied to the dest_folder
+        copy_dir is copied into backup_root
+        copy_dir: path to dir to copy
         """
-
-        # self._copy_setup()  #creates folder for backups
         for dirname, child_dirs, files in os.walk(copy_dir):
-            relative_path = os.path.relpath(dirname, copy_dir)      #get relative path from root directory
+            relative_path = os.path.relpath(dirname, self.target_root)
             relative_path_split = _splitpath(relative_path)
-
-            if relative_path_split == ["."]: # special case for root directory
-                box_folder = self.backup_root
-            else:
-                box_folder = self._go_to(relative_path_split)
+            box_folder = self._go_to(relative_path_split)
 
             for f in files:
-                uploaded = box_folder.upload(os.path.join(dirname, f), f, preflight_check=True)
-                #copy all items in path to box_folder
+               uploaded = box_folder.upload(os.path.join(dirname, f), f, preflight_check=True)
 
 def _ls(folder):
     """
@@ -167,7 +175,7 @@ def _splitpath(path):
 def main():
 
     secrets = 'secrets.json' #define this file yourself and place it in the root directory.
-    wrapper = ClientWrapper(secrets)
+    wrapper = ClientWrapper(secrets, 'EDSdata_backup')
 
     #CHANGE THIS TO COPY WHAT EVER FOLDER YOU WANT.
     wrapper.prep_copy('test/test_root')
