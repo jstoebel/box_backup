@@ -114,7 +114,7 @@ class ClientWrapper:
         copy_dir: path to dir to copy
         """
         for dirname, child_dirs, files in os.walk(copy_dir):
-            relative_path = os.path.relpath(dirname, self.target_root)
+            relative_path = os.path.relpath(dirname, copy_dir)
             relative_path_split = _splitpath(relative_path)
             box_folder = self._go_to(relative_path_split)
 
