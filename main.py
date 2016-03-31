@@ -28,7 +28,7 @@ class ClientWrapper:
 
         token_refresh.main(secrets_path)     #refresh token
 
-        with open(secrets, 'r') as secrets_file:
+        with open(secrets_path, 'r') as secrets_file:
             secrets = json.load(secrets_file)
             oauth = OAuth2(
                 client_id = secrets['client_id'],

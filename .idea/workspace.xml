@@ -3,7 +3,6 @@
   <component name="ChangeListManager">
     <list default="true" id="022a0774-b16c-4dd8-97cf-1dceeec1b8a6" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/main.py" afterPath="$PROJECT_DIR$/main.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/token_refresh.py" afterPath="$PROJECT_DIR$/token_refresh.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <list id="591e5d97-672f-4f03-9b22-0fd53c88ba58" name="New changelist" comment="" />
@@ -29,8 +28,8 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5520362">
-              <caret line="184" column="51" selection-start-line="184" selection-start-column="51" selection-end-line="184" selection-end-column="51" />
+            <state vertical-scroll-proportion="0.5701358">
+              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -540,7 +539,13 @@
       <option name="project" value="LOCAL" />
       <updated>1459440728315</updated>
     </task>
-    <option name="localTasksCounter" value="17" />
+    <task id="LOCAL-00017" summary="adding path to secrets.json relative from main.py">
+      <created>1459450129647</created>
+      <option name="number" value="00017" />
+      <option name="project" value="LOCAL" />
+      <updated>1459450129647</updated>
+    </task>
+    <option name="localTasksCounter" value="18" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -592,7 +597,8 @@
     <MESSAGE value="removed print statements from tests" />
     <MESSAGE value="print response if refresh token OAuth fails." />
     <MESSAGE value="added new test&#10;tests that existing archives in Box won't cause an error" />
-    <option name="LAST_COMMIT_MESSAGE" value="added new test&#10;tests that existing archives in Box won't cause an error" />
+    <MESSAGE value="adding path to secrets.json relative from main.py" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding path to secrets.json relative from main.py" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -966,8 +972,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5520362">
-          <caret line="184" column="51" selection-start-line="184" selection-start-column="51" selection-end-line="184" selection-end-column="51" />
+        <state vertical-scroll-proportion="0.5701358">
+          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
