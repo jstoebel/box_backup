@@ -11,7 +11,7 @@ import token_refresh
 class ClientWrapperTest(unittest.TestCase):
 
     def setUp(self):
-        self.secrets_loc = '../secrets.json'
+        self.secrets_loc = 'secrets.json'
         self.wrapper = backup_main.ClientWrapper(self.secrets_loc, 'backup_test')
 
     def tearDown(self):
