@@ -28,11 +28,21 @@
       <file leaf-file-name="main.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.5701358">
-              <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.5927602">
+              <caret line="186" column="22" selection-start-line="186" selection-start-column="22" selection-end-line="186" selection-end-column="22" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="secrets.json" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/secrets.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="-2.0">
+              <caret line="3" column="57" selection-start-line="3" selection-start-column="57" selection-end-line="3" selection-end-column="57" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -78,9 +88,9 @@
         <option value="$PROJECT_DIR$/log.txt" />
         <option value="$PROJECT_DIR$/todo.md" />
         <option value="$PROJECT_DIR$/.gitignore" />
-        <option value="$PROJECT_DIR$/secrets.json" />
         <option value="$PROJECT_DIR$/test/test.py" />
         <option value="$PROJECT_DIR$/token_refresh.py" />
+        <option value="$PROJECT_DIR$/secrets.json" />
         <option value="$PROJECT_DIR$/main.py" />
       </list>
     </option>
@@ -545,7 +555,13 @@
       <option name="project" value="LOCAL" />
       <updated>1459450129647</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="adding secrets_path to open statement in __init__">
+      <created>1459450405406</created>
+      <option name="number" value="00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1459450405406</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -598,7 +614,8 @@
     <MESSAGE value="print response if refresh token OAuth fails." />
     <MESSAGE value="added new test&#10;tests that existing archives in Box won't cause an error" />
     <MESSAGE value="adding path to secrets.json relative from main.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="adding path to secrets.json relative from main.py" />
+    <MESSAGE value="adding secrets_path to open statement in __init__" />
+    <option name="LAST_COMMIT_MESSAGE" value="adding secrets_path to open statement in __init__" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -924,13 +941,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/secrets.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.41982508">
-          <caret line="8" column="1" selection-start-line="8" selection-start-column="1" selection-end-line="8" selection-end-column="1" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file:///usr/local/lib/python2.7/posixpath.py">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.31712472">
@@ -970,10 +980,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/secrets.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-2.0">
+          <caret line="3" column="57" selection-start-line="3" selection-start-column="57" selection-end-line="3" selection-end-column="57" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/main.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.5701358">
-          <caret line="29" column="0" selection-start-line="29" selection-start-column="0" selection-end-line="29" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.5927602">
+          <caret line="186" column="22" selection-start-line="186" selection-start-column="22" selection-end-line="186" selection-end-column="22" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>

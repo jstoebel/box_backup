@@ -36,7 +36,10 @@ class ClientWrapper:
                 access_token = secrets['access_token']
             )
 
+            self.target_root = secrets['copy_path']
+
         self.client = Client(oauth)
+
 
         #CHANGE THIS TO THE DIRECTORY OF WHERE YOUR UPLOADS WILL GO.
         self._get_root_folder(root)
@@ -97,18 +100,16 @@ class ClientWrapper:
     def prep_copy(self, root_dir):
         """
         look over root directory and copy and directories not already added to box
-        :param root_dir: the root directory of the backup.
         """
-        self.target_root = root_dir # the root dir to be copied
 
         box_contents = _ls(self.backup_root)
         box_names = frozenset([i.name for i in box_contents if i.type == 'folder']) # all of the items in this folder in box
 
-        archives = frozenset(os.listdir(root_dir)) # all of the archives in the dir to be backed up
+        archives = frozenset(os.listdir(self.target_root)) # all of the archives in the dir to be backed up
 
         new_items = archives - box_names
         for i in new_items:
-            self._copy(os.path.join(root_dir, i))
+            self._copy(os.path.join(self.target_root, i))
 
     def _copy(self, copy_dir):
         """
@@ -183,7 +184,7 @@ def main():
     wrapper = ClientWrapper(secrets, 'EDSdata_backup')
 
     #CHANGE THIS TO COPY WHAT EVER FOLDER YOU WANT.
-    wrapper.prep_copy('test/test_root')
+    wrapper.prep_copy()
 
 if __name__ == '__main__':
     main()
