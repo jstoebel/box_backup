@@ -58,6 +58,16 @@ class ClientWrapperTest(unittest.TestCase):
             box_items.sort()
             self.assertEqual(box_items, sorted(files))
 
+    def testcopy_has_existing(self):
+        """
+        attempts the same as above except one archive will already be in Box
+        if no error is raised the test has passed!
+        """
+
+        # set up, upload archive1
+        self.wrapper.prep_copy('test_root/archive1')
+        self.wrapper.prep_copy('test_root')
+
 class TokenRefreshTest(unittest.TestCase):
 
     def setUp(self):
