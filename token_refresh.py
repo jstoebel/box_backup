@@ -58,6 +58,11 @@ def EmailConnect(password, recipiant):
     return mail_cnxn
 
 def TestCnxnOpen(cnxn):
+    """
+    test that the mail connection is open.
+    :param cnxn:
+    :return:
+    """
     try:
         status = cnxn.noop()[0]
     except smtplib.SMTPServerDisconnected:  # smtplib.SMTPServerDisconnected
@@ -77,7 +82,6 @@ def alert_fail(msg, password, recipiant):
     email['Subject'] = "[EDS_dashboard] Box backup failed"
     email['From'] = sender
     email['To'] = recipiant
-
     mail_cnxn.sendmail(recipiant, recipiant, email.as_string())
 
 def log_fail(log_loc, msg):

@@ -1,4 +1,5 @@
 import calendar
+import inspect
 import json
 import os
 import time
@@ -9,6 +10,8 @@ import boxsdk
 import sys
 sys.path.insert(0, '.')
 import token_refresh
+
+THIS_DIR = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
 
 class ClientWrapper:
 
@@ -21,8 +24,10 @@ class ClientWrapper:
         to enter a path to a box folder anywhere in their tree
         """
 
+        secrets_path = os.path.join(THIS_DIR, secrets)
 
-        token_refresh.main(secrets)     #refresh token
+        token_refresh.main(secrets_path)     #refresh token
+
         with open(secrets, 'r') as secrets_file:
             secrets = json.load(secrets_file)
             oauth = OAuth2(
@@ -116,7 +121,7 @@ class ClientWrapper:
             box_folder = self._go_to(relative_path_split)
 
             for f in files:
-               uploaded = box_folder.upload(os.path.join(dirname, f), f, preflight_check=True)
+                uploaded = box_folder.upload(os.path.join(dirname, f), f, preflight_check=True)
 
 def _ls(folder):
     """
