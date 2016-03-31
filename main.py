@@ -35,11 +35,8 @@ class ClientWrapper:
                 client_secret = secrets['client_secret'],
                 access_token = secrets['access_token']
             )
-
-            self.target_root = secrets['copy_path']
-
+           
         self.client = Client(oauth)
-
 
         #CHANGE THIS TO THE DIRECTORY OF WHERE YOUR UPLOADS WILL GO.
         self._get_root_folder(root)
