@@ -80,7 +80,7 @@ class ClientWrapper:
         current_folder = self.backup_root
 
         for p in path:
-            #try to get make it. If we fail, navigate to it.
+            # try to make it. If we fail, navigate to it.
             try:
                 current_folder = current_folder.create_subfolder(p)     #create the folder
             except boxsdk.exception.BoxAPIException, e:
@@ -98,7 +98,7 @@ class ClientWrapper:
         """
         look over root directory and copy and directories not already added to box
         """
-
+        self.root_dir = root_dir
         box_contents = _ls(self.backup_root)
         box_names = frozenset([i.name for i in box_contents if i.type == 'folder']) # all of the items in this folder in box
 
@@ -114,10 +114,9 @@ class ClientWrapper:
         copy_dir: path to dir to copy
         """
         for dirname, child_dirs, files in os.walk(copy_dir):
-            relative_path = os.path.relpath(dirname, copy_dir)
+            relative_path = os.path.relpath(dirname, self.root_dir)
             relative_path_split = _splitpath(relative_path)
             box_folder = self._go_to(relative_path_split)
-
             for f in files:
                 uploaded = box_folder.upload(os.path.join(dirname, f), f, preflight_check=True)
 
