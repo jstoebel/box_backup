@@ -184,7 +184,8 @@ def main():
     wrapper = ClientWrapper(secrets, 'EDSdata_backup')
 
     #CHANGE THIS TO COPY WHAT EVER FOLDER YOU WANT.
-    wrapper.prep_copy()
+   wrapper.prep_copy(os.path.join(os.path.expanduser('~')
+, 'backups/eds_backup'))
 
 if __name__ == '__main__':
     main()
