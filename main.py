@@ -105,11 +105,11 @@ class ClientWrapper:
         box_contents = _ls(self.backup_root)
         box_names = frozenset([i.name for i in box_contents if i.type == 'folder']) # all of the items in this folder in box
 
-        archives = frozenset(os.listdir(self.target_root)) # all of the archives in the dir to be backed up
+        archives = frozenset(os.listdir(root_dir)) # all of the archives in the dir to be backed up
 
         new_items = archives - box_names
         for i in new_items:
-            self._copy(os.path.join(self.target_root, i))
+            self._copy(os.path.join(root_dir, i))
 
     def _copy(self, copy_dir):
         """
