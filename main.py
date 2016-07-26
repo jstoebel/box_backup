@@ -35,7 +35,7 @@ class ClientWrapper:
                 client_secret = secrets['client_secret'],
                 access_token = secrets['access_token']
             )
-           
+
         self.client = Client(oauth)
 
         #CHANGE THIS TO THE DIRECTORY OF WHERE YOUR UPLOADS WILL GO.
@@ -106,7 +106,9 @@ class ClientWrapper:
 
         new_items = archives - box_names
         for i in new_items:
+            print 'coping {}...'.format(i),
             self._copy(os.path.join(root_dir, i))
+            print '-> Done!'
 
     def _copy(self, copy_dir):
         """
