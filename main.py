@@ -1,3 +1,4 @@
+import argparse
 import calendar
 import inspect
 import json
@@ -11,7 +12,7 @@ import sys
 sys.path.insert(0, '.')
 import token_refresh
 
-THIS_DIR = os.path.dirname(os.path.abspath(inspect.getfile(inspect.currentframe())))
+THIS_DIR = os.path.dirname(os.path.realpath(__file__))
 
 class ClientWrapper:
 
@@ -96,7 +97,7 @@ class ClientWrapper:
 
     def prep_copy(self, root_dir):
         """
-        look over root directory and copy and directories not already added to box
+        look over root directory and copy any directories not already added to box
         """
         self.root_dir = root_dir
         box_contents = _ls(self.backup_root)
@@ -106,9 +107,9 @@ class ClientWrapper:
 
         new_items = archives - box_names
         for i in new_items:
-            print 'coping {}...'.format(i),
+            print('coping {}...'.format(i))
             self._copy(os.path.join(root_dir, i))
-            print '-> Done!'
+            print('-> Done!')
 
     def _copy(self, copy_dir):
         """
@@ -178,12 +179,16 @@ def _splitpath(path):
 
 def main():
 
-    secrets = 'secrets.json' #define this file yourself and place it in the root directory.
-    wrapper = ClientWrapper(secrets, 'EDSdata_backup')
+    parser = argparse.ArgumentParser(description='Archive to Box')
 
-    #CHANGE THIS TO COPY WHAT EVER FOLDER YOU WANT.
-    wrapper.prep_copy(os.path.join(os.path.expanduser('~')
-, 'backups/eds_backup'))
+    parser.add_argument('--src', help='The directory to copy from.')
+    parse.add_argument('--dest', help="The folder in box to copy to. Must be in root folder")
+    args = parser.parse_args()
+
+    secrets = 'secrets.json' #define this file yourself and place it in the root directory.
+    wrapper = ClientWrapper(secrets, args.dest)
+
+    wrapper.prep_copy(args.src)
 
 if __name__ == '__main__':
     main()

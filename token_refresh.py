@@ -1,13 +1,5 @@
-__author__ = 'stoebelj'
-
-from email.utils import formataddr
-from email.header import Header
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-import json
-import smtplib
 import datetime
-
+import json
 import os
 
 import requests
@@ -45,44 +37,7 @@ def refresh(secrects_loc):
     with open(secrects_loc, 'w') as secrets_in:
         json.dump(secrets, secrets_in, indent=4, sort_keys=True)
 
-    print "tokens refreshed!"
-
-def EmailConnect(password, recipiant):
-    '''Connects to email server and returns connection object.'''
-
-    url = 'smtp.office365.com'
-    mail_cnxn = smtplib.SMTP(url, 587)
-    mail_cnxn.starttls()
-    mail_cnxn.ehlo()
-    mail_cnxn.login(recipiant, password)
-    return mail_cnxn
-
-def TestCnxnOpen(cnxn):
-    """
-    test that the mail connection is open.
-    :param cnxn:
-    :return:
-    """
-    try:
-        status = cnxn.noop()[0]
-    except smtplib.SMTPServerDisconnected:  # smtplib.SMTPServerDisconnected
-        status = -1
-    return True if status == 250 else False
-
-def alert_fail(msg, password, recipiant):
-    """
-    logs an alert
-    :return:
-    """
-    mail_cnxn = EmailConnect(password, recipiant)
-    html_text = MIMEText(msg, 'html')
-    email = MIMEMultipart('alternative')
-    email.attach(html_text)
-    sender = formataddr((str(Header(u'Jacob Stoebel', 'utf-8')), recipiant))
-    email['Subject'] = "[EDS_dashboard] Box backup failed"
-    email['From'] = sender
-    email['To'] = recipiant
-    mail_cnxn.sendmail(recipiant, recipiant, email.as_string())
+    print("tokens refreshed!")
 
 def log_fail(log_loc, msg):
     """
@@ -100,7 +55,7 @@ def main(secrects_loc):
         with open(secrects_loc, 'r') as secrets_file:
             secrets = json.load(secrets_file)
         msg = """[{time_stamp}]
-    Connection to Box failed! Please manually enter tokens and try again. Back up will not occur as normal until this is fixed!
+    Connection to Box failed! Please manually enter tokens and try again. Backup will not occur as normal until this is fixed!
 
 """.format(time_stamp=str(datetime.datetime.now()))
         log_fail('log.txt', msg)
